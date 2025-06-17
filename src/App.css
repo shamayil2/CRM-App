@@ -1,0 +1,14 @@
+body {
+    background-color: #FFEEA9;
+    margin: 0;
+}
+
+header h1 {
+    color: #7B4019;
+    font-family: sans-serif;
+    font-size: 40px;
+    background-color: #FFBF78;
+    padding: 30px 20px;
+    margin: 0;
+    text-align: center;
+}
