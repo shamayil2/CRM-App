@@ -1,15 +1,19 @@
+
+
 const Sidebar = ({sidebarItems}) => {
     console.log(sidebarItems)
 
     return(
         <>
-        <h2>Sidebar</h2>
-        <ul>
+        <div className="side-list">
+          <ul>
         {sidebarItems.map((item)=>
             <li>{item}</li>
         )}
         
         </ul>
+        </div>
+      
         </>
     )
 
