@@ -34,7 +34,7 @@ header h1 {
     background-color: #1DCD9F;
     padding: 20px 5px;
     border-radius: 30px;
-    margin: 30px 0px;
+    margin: 30px 0px 5px;
 }
 
 .lead-status h5 {
@@ -50,6 +50,7 @@ header h1 {
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
+    margin-bottom: 5px;
 }
 
 .lead-status li {
@@ -66,4 +67,60 @@ header h1 {
     padding: 15px 20px;
     background-color: black;
     color: white;
+}
+
+.filterDiv {
+    background-color: #5A827E;
+    padding: 5px 5px;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.newLeadBtn {
+    background-color: black;
+    padding: 9px 10px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.newLeadBtn button {
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 0px 30px;
+}
+
+.addlead-form {
+    background-color: #5A827E;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.addlead-form label {
+    color: white;
+    font-size: 16px;
+    margin-right: 5%;
+    width: 40%;
+    text-align: left;
+}
+
+.addlead-form input,
+select {
+    width: 40%;
+    margin: 10px 0px;
+    border: 2px solid black;
+    background-color: #FFEEA9;
+    border-radius: 15px;
+    padding: 5px 10px;
+    color: black;
+}
+
+.add-lead {
+    margin-bottom: 20px;
 }

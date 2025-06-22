@@ -28,11 +28,22 @@ const App = () => {
       <li><h6><span>Qualified: 3 Leads</span> </h6></li>
     </ul>
     </div>
+    <div className="filterDiv">
+
+    <label htmlFor="">Quick Filters: </label>
+     <label> <input type="radio" name="filter" value="new"/> New </label>
+      <label><input type="radio" name="filter" value="contacted"/> Contacted </label>
+
+     </div>
+     <div className="newLeadBtn">
+        <button>Add New Lead</button>
+     </div>
     </div>
+    
+    
       </div>
       </div>
      
-    
     </main>
     </>
   )
