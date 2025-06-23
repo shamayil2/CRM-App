@@ -25,13 +25,29 @@ const NewLeadForm = () => {
                 </select><br />
                 <label htmlFor="">Lead Status: </label>
                 <select name="" id="">
-                    <option value="new">New</option><br />
-                    <option value="contacted">Contacted</option><br />
-                    <option value="qualified">Qualified</option><br />
-                    <option value="proposalSent">Proposal Sent</option><br />
-                    <option value="closed">Closed</option><br />
+                    <option value="New">New</option><br />
+                    <option value="Contacted">Contacted</option><br />
+                    <option value="Qualified">Qualified</option><br />
+                    <option value="ProposalSent">Proposal Sent</option><br />
+                    <option value="Closed">Closed</option><br />
                 </select>
+                <label htmlFor="priority">Priority: </label>
+                <select name="" id="priority">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <label htmlFor="">Time to Close (In Days):</label>
+                <input type="number" /><br />
+                <label htmlFor="tags">Tags: </label>
+                <select name="" id="tags">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select><br />
+                <button>Add the Lead</button>
                 </form>
+                
             </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-
+import {Link} from "react-router-dom"
 import Sidebar from "./components/Sidebar"
 const App = () => {
 
@@ -36,7 +36,7 @@ const App = () => {
 
      </div>
      <div className="newLeadBtn">
-        <button>Add New Lead</button>
+       <Link to="/addlead"> <button>Add New Lead</button></Link>
      </div>
     </div>
     

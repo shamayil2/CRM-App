@@ -100,9 +100,35 @@ header h1 {
     background-color: #5A827E;
     padding: 20px;
     border-radius: 20px;
+    text-align: center;
+}
+
+.new-agent-form {
+    background-color: #5A827E;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 50px;
+    padding: 40px 20px;
 }
 
 .addlead-form label {
+    color: white;
+    font-size: 16px;
+    margin-right: 5%;
+    width: 40%;
+    text-align: left;
+}
+
+.new-agent-form label {
+    color: white;
+    font-size: 16px;
+    margin-right: 5%;
+    width: 40%;
+    text-align: left;
+}
+
+.new-agent-form label {
     color: white;
     font-size: 16px;
     margin-right: 5%;
@@ -121,6 +147,38 @@ select {
     color: black;
 }
 
+.new-agent-form input,
+select {
+    width: 40%;
+    margin: 10px 0px;
+    border: 2px solid black;
+    background-color: #FFEEA9;
+    border-radius: 15px;
+    padding: 5px 10px;
+    color: black;
+}
+
 .add-lead {
     margin-bottom: 20px;
+}
+
+.addlead-form button {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    border-radius: 15px;
+}
+
+.new-agent-form button {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    border-radius: 15px;
+}
+
+.add-lead h1 {
+    color: seagreen;
+    margin-top: 10px;
 }

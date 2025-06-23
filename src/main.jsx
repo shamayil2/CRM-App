@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import NewLeadForm from "./pages/NewLeadForm"
+import NewAgentForm from "./pages/NewAgentForm"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
 import './index.css'
@@ -14,6 +15,8 @@ const router = createBrowserRouter([{
 },
 {
   path:"/addlead",element:<NewLeadForm/>
+},{
+  path:"/addagent",element:<NewAgentForm/>
 }
 ])
 
