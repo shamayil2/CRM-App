@@ -41,9 +41,9 @@ const NewLeadForm = () => {
                 <input type="number" /><br />
                 <label htmlFor="tags">Tags: </label>
                 <select name="" id="tags">
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
+                    <option value="High Value">High Value</option>
+                    <option value="Follow Up">Follow Up</option>
+                    
                 </select><br />
                 <button>Add the Lead</button>
                 </form>
