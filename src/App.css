@@ -100,7 +100,14 @@ header h1 {
     background-color: #5A827E;
     padding: 20px;
     border-radius: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tags-input {
+    display: inline-block;
+    width: 40%;
+    color: #FFEEA9;
 }
 
 .new-agent-form {
@@ -145,6 +152,11 @@ select {
     border-radius: 15px;
     padding: 5px 10px;
     color: black;
+}
+
+.addlead-form input[type="checkbox"] {
+    width: auto;
+    color: white;
 }
 
 .new-agent-form input,
