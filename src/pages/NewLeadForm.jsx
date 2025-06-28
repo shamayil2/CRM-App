@@ -11,6 +11,47 @@ const NewLeadForm = () => {
 
 
 
+    function handleTags(event){
+
+        const checked = event.target.checked;
+        if(checked){
+            setLeadData({...leadData,tags:[...leadData.tags,event.target.value]})
+        }else{
+            const tagsArr = leadData.tags.filter((tag)=>tag!== event.target.value);
+            setLeadData({...leadData,tags:[...tagsArr]})
+
+        }
+
+    }
+
+    async function postLead(event){
+        try{
+             event.preventDefault();
+            const leadObj = {...leadData,name:leadData.leadName}
+            delete leadObj.leadName;
+             const res = await fetch("http://localhost:3000/leads",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(leadObj)
+             })
+             console.log(leadObj)
+             if(res.ok){
+                const data = await res.json();
+                console.log(data)
+             }else{
+                const error = await res.json();
+                console.log("Error while adding Lead",error)
+             }
+
+
+
+        }
+       catch(error){
+        console.log("Cannot Add Lead",error)
+       }
+
+    }
+
     return(
         <>
         <div className="container">
@@ -30,8 +71,8 @@ const NewLeadForm = () => {
                 </select><br />
                 <label htmlFor="sales-agent">Sales Agent: </label>
                 <select name="" id="" onChange={(event)=>setLeadData({...leadData,salesAgent:event.target.value})}>
-                    <option value="">Agent 1</option>
-                    <option value="">Agent 2</option>
+                    <option value="Agent 1">Agent 1</option>
+                    <option value="Agent 2">Agent 2</option>
                 </select><br />
                 <label htmlFor="">Lead Status: </label>
                 <select name="" id="" onChange={(event)=>setLeadData({...leadData,status:event.target.value})}>
@@ -51,15 +92,14 @@ const NewLeadForm = () => {
                 <input type="number" onChange={(event)=>setLeadData({...leadData,timeToClose:event.target.value})}/><br />
                 <label className="tags-label"  htmlFor="tags">Tags: </label>
                 <div className="tags-input">
-                 <label><input type="checkbox" value="High Value"/> High Value </label>  
-                <label htmlFor=""><input type="checkbox" value="Follow Up" /> Follow Up </label>
+                 <label><input type="checkbox" value="High Value" onChange={(event)=>handleTags(event)}/> High Value </label>  
+                <label htmlFor=""><input type="checkbox" value="Follow Up" onChange={(event)=>handleTags(event)}/> Follow Up </label>
                 </div>
              
               <br />
-                <button>Add the Lead</button>
+                <button onClick={(event)=>postLead(event)}>Add the Lead</button>
                 </form>
-                <p>{leadData.leadName}</p>
-                <p>{leadData.source}</p>
+                <p>{leadData.priority}</p>
             </div>
             </div>
         </div>
