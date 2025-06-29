@@ -101,7 +101,7 @@ header h1 {
     padding: 20px;
     border-radius: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .tags-input {

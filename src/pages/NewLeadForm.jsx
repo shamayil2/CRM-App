@@ -8,8 +8,28 @@ const NewLeadForm = () => {
     tags:[],
     timeToClose:0,
     priority:""})
+    const [agents,setAgents] = useState([])
 
+    useEffect(() => {
+      async function getAgents() {
+        try {
+          const res = await fetch("http://localhost:3000/agents");
 
+          if (res.ok) {
+            const data = await res.json();
+            setAgents(data);
+          } else {
+            const error = await res.json();
+          }
+        } catch (error) {
+          console.log("Cannot fetch the agents", error);
+        }
+
+        
+
+      }
+      getAgents();
+    }, []);
 
     function handleTags(event){
 
@@ -71,9 +91,11 @@ const NewLeadForm = () => {
                 </select><br />
                 <label htmlFor="sales-agent">Sales Agent: </label>
                 <select name="" id="" onChange={(event)=>setLeadData({...leadData,salesAgent:event.target.value})}>
-                    <option value="Agent 1">Agent 1</option>
-                    <option value="Agent 2">Agent 2</option>
+                    {agents.map((agent)=>(
+                       <option key={agent._id} value={agent._id}>{agent.name}</option>
+                    ))}
                 </select><br />
+                
                 <label htmlFor="">Lead Status: </label>
                 <select name="" id="" onChange={(event)=>setLeadData({...leadData,status:event.target.value})}>
                     <option value="New">New</option>
@@ -99,7 +121,7 @@ const NewLeadForm = () => {
               <br />
                 <button onClick={(event)=>postLead(event)}>Add the Lead</button>
                 </form>
-                <p>{leadData.priority}</p>
+ 
             </div>
             </div>
         </div>
