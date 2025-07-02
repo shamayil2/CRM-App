@@ -47,6 +47,9 @@ const NewLeadForm = () => {
     async function postLead(event){
         try{
              event.preventDefault();
+             event.target.reportValidity(); 
+
+
             const leadObj = {...leadData,name:leadData.leadName}
             delete leadObj.leadName;
              const res = await fetch("http://localhost:3000/leads",{
@@ -82,15 +85,17 @@ const NewLeadForm = () => {
             <div className="addlead-form">
                 <form action="">
                 <label htmlFor="leadName">Lead Name: </label> : 
-                <input type="text" onChange={(event)=>setLeadData({...leadData,leadName:event.target.value})} /><br />
+                <input id="leadName" type="text" onChange={(event)=>setLeadData({...leadData,leadName:event.target.value})} required/><br />
                 <label htmlFor="leadSource">Lead Source: </label>
                 <select name="" id=""  onChange={(event)=>setLeadData({...leadData,source:event.target.value})}>
+                    <option value="">Select Lead Source</option>
                     <option value="Website">Website</option>
                     <option value="Referral">Referral</option>
                     <option value="Cold Call">Cold Call</option>
                 </select><br />
                 <label htmlFor="sales-agent">Sales Agent: </label>
                 <select name="" id="" onChange={(event)=>setLeadData({...leadData,salesAgent:event.target.value})}>
+                    <option value="">Select Agent</option>
                     {agents.map((agent)=>(
                        <option key={agent._id} value={agent._id}>{agent.name}</option>
                     ))}
@@ -98,6 +103,7 @@ const NewLeadForm = () => {
                 
                 <label htmlFor="">Lead Status: </label>
                 <select name="" id="" onChange={(event)=>setLeadData({...leadData,status:event.target.value})}>
+                    <option value="">Select Lead Status</option>
                     <option value="New">New</option>
                     <option value="Contacted">Contacted</option>
                     <option value="Qualified">Qualified</option>
@@ -106,6 +112,7 @@ const NewLeadForm = () => {
                 </select>
                 <label htmlFor="priority">Priority: </label>
                 <select name="" id="priority" onChange={(event)=>setLeadData({...leadData,priority:event.target.value})}>
+                    <option value="">Choose Priority</option>
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
                     <option value="Low">Low</option>
@@ -119,7 +126,7 @@ const NewLeadForm = () => {
                 </div>
              
               <br />
-                <button onClick={(event)=>postLead(event)}>Add the Lead</button>
+                <button type="submit" onClick={(event)=>postLead(event)}>Add the Lead</button>
                 </form>
  
             </div>
