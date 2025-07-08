@@ -107,7 +107,7 @@ const NewLeadForm = () => {
                     <option value="New">New</option>
                     <option value="Contacted">Contacted</option>
                     <option value="Qualified">Qualified</option>
-                    <option value="ProposalSent">Proposal Sent</option>
+                    <option value="Proposal Sent">Proposal Sent</option>
                     <option value="Closed">Closed</option>
                 </select>
                 <label htmlFor="priority">Priority: </label>
