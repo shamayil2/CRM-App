@@ -194,3 +194,45 @@ select {
     color: seagreen;
     margin-top: 10px;
 }
+
+.lead-list-ol {
+    background-color: #5A827E;
+    color: white;
+    border-radius: 20px;
+    padding: 20px 40px;
+}
+
+.side-list.leads {
+    margin-top: 45px;
+}
+
+.lead-list-ol li {
+    border-bottom: 1px solid rgb(34, 81, 69);
+    padding-bottom: 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.filterLeadsDiv {
+    background-color: #708A58;
+    padding: 20px 20px;
+    border-radius: 20px;
+}
+
+.filterLeadsDiv h3 {
+    color: white;
+    font-weight: 400;
+}
+
+.filterLeadsDiv select {
+    width: 100%;
+}
+
+.filterLeadsDiv h5 {
+    color: white;
+    font-weight: 400;
+    text-align: center;
+}
+
+.filterLeadsDiv option {
+    border: 0;
+}

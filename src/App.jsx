@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom"
-import Sidebar from "./components/Sidebar"
 const App = () => {
 
   return(
@@ -14,7 +13,16 @@ const App = () => {
       <div className="container">
      <div className="row">
     <div className="col-md-3 ">
-      <Sidebar sidebarItems={["Leads","Sales","Agents","Reports","Settings"]}/>
+      <div className="side-list">
+          <ul>
+          <Link to="/leadList"><li>Leads</li></Link>  
+            <li>Sales</li>
+            <li>Agents</li>
+            <li>Reports</li>
+            <li>Settings</li>
+        
+        </ul>
+        </div>
     </div>
     <div className="col-md-9">
     <div className="main-content">
