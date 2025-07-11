@@ -54,9 +54,20 @@ const LeadList = () => {
         try{
             let param = event.target.name;
             let value = event.target.value;
-            let defaultApi = "http://localhost:3000/leads"
-            defaultApi+=`?${param}=${value}`
+            const newFiltersObj = {...filtersObj,[param]:value}
+            console.log(newFiltersObj)
             setFiltersObj({...filtersObj,[param]:value})
+            let defaultApi = "http://localhost:3000/leads?"
+            for(const key in newFiltersObj){
+                
+                if(newFiltersObj[key]!==""){
+                     defaultApi+=`${key}=${newFiltersObj[key]}&`
+                     console.log(defaultApi)
+                     console.log(key)
+                }
+            }
+           console.log(defaultApi)
+            
             const  res= await fetch(`${defaultApi}`)
             if(res.ok){
                 const data = await res.json();
@@ -73,8 +84,9 @@ const LeadList = () => {
     }
 
 
-    console.log(salesAgents)
-    console.log(filtersObj)
+    // console.log(salesAgents)
+    
+    // console.log(leadsData[0])
     return(
         <>
         <h1 className="text-center mb-4">Lead List</h1>
@@ -113,16 +125,39 @@ const LeadList = () => {
         </div>
             </div>
             <div className="col-md-8">
-                <h2 className="text-center" >Lead Overview</h2>
-                <ol className="lead-list-ol">
+                <h2 className="text-center leadListDiv" >Lead Overview</h2>
+                    <div className="row">
+                     <div className="col-md-2"><b>Lead</b></div>
+                     <div className="col-md-2"><b>
+                        Agent Name</b></div>
+                     <div className="col-md-2"><b>Source</b></div>
+                     <div className="col-md-2"><b>Time To Close(in Days)</b></div>
+                     <div className="col-md-2"><b>Priority</b></div>
+                     <div className="col-md-2"><b>Tags</b></div>
+                      </div>
+                     <ul>
+                       
                 {leadsData.map((lead)=>(   
-                    
-                    <li key={lead._id}>
-                    {lead.name}  <span>({lead.status})</span>
-                    </li>
+                    <>
+                    <li>
 
+                    <div className="row">
+                    <div className="col-md-2">
+                    {lead.name}  <span>({lead.status})</span>
+                    </div>
+                    <div className="col-md-2">{lead.salesAgent?.name}</div>
+                    <div className="col-md-2">{lead.source}</div>
+                    <div className="col-md-2">{lead.timeToClose}</div>
+                    <div className="col-md-2">{lead.priority}</div>
+                    <div className="col-md-2">{lead.tags.join(", ")}</div>
+                    </div>
+                     </li>
+                     
+                    </>
                 ))}
-                </ol>
+               </ul>
+                
+               
             </div>
         </div>
         </div>
