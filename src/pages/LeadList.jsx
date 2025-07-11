@@ -2,6 +2,7 @@ import {useState,useEffect} from "react"
 import {Link} from "react-router-dom"
 const LeadList = () => {
     const [leadsData,setLeadsData] = useState([]);
+    const [filtersObj,setFiltersObj] = useState({status:"",salesAgent:""})
     const [salesAgents,setSalesAgents] = useState([]);
     useEffect(()=>{
 
@@ -47,7 +48,33 @@ const LeadList = () => {
         fetchAgents()
 
     },[])
+
+    async function filterData(event){
+
+        try{
+            let param = event.target.name;
+            let value = event.target.value;
+            let defaultApi = "http://localhost:3000/leads"
+            defaultApi+=`?${param}=${value}`
+            setFiltersObj({...filtersObj,[param]:value})
+            const  res= await fetch(`${defaultApi}`)
+            if(res.ok){
+                const data = await res.json();
+                console.log(data);
+            }else{
+                const err = await res.json();
+                console.log(err);
+            }
+        }   
+
+        catch(error){
+            console.log(error);
+        }
+    }
+
+
     console.log(salesAgents)
+    console.log(filtersObj)
     return(
         <>
         <h1 className="text-center mb-4">Lead List</h1>
@@ -61,8 +88,9 @@ const LeadList = () => {
         </div>
         <div className="filterLeadsDiv">
             <div>
-                <h5>Filter Leads By Lead Status</h5>
-                <select name="" id="" >
+                <h4>Filter Leads</h4>
+                <h5> By Lead Status</h5>
+                <select name="status" id="" onChange={(event)=>filterData(event)} >
                     <option value="">Select Lead Status</option>
                     <option value="New">New</option>
                     <option value="Contacted">Contacted</option>
@@ -72,8 +100,8 @@ const LeadList = () => {
                 </select>
             </div>
             <div>
-                <h5>Filter Leads By Sales Agent</h5>
-                <select name="" id="" >
+                <h5>By Sales Agent</h5>
+                <select name="salesAgent" id="" onChange={(event)=>filterData(event)} >
                     <option value="">Select Sales Agent</option>
                     {salesAgents.map((agent)=>(
                         <option value={agent._id}>{agent.name}</option>

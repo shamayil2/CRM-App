@@ -236,3 +236,8 @@ select {
 .filterLeadsDiv option {
     border: 0;
 }
+
+.filterLeadsDiv h4 {
+    color: white;
+    text-align: center;
+}
