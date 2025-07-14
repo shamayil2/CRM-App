@@ -2,7 +2,7 @@ import {useState,useEffect} from "react"
 import {Link} from "react-router-dom"
 const LeadList = () => {
     const [leadsData,setLeadsData] = useState([]);
-    const [filtersObj,setFiltersObj] = useState({status:"",salesAgent:""})
+    const [filtersObj,setFiltersObj] = useState({})
     const [salesAgents,setSalesAgents] = useState([]);
     useEffect(()=>{
 
@@ -54,24 +54,28 @@ const LeadList = () => {
         try{
             let param = event.target.name;
             let value = event.target.value;
+            
             const newFiltersObj = {...filtersObj,[param]:value}
             console.log(newFiltersObj)
             setFiltersObj({...filtersObj,[param]:value})
             let defaultApi = "http://localhost:3000/leads?"
-            for(const key in newFiltersObj){
+            if(param!="clearFilters"){
+                 for(const key in newFiltersObj){
                 
                 if(newFiltersObj[key]!==""){
                      defaultApi+=`${key}=${newFiltersObj[key]}&`
-                     console.log(defaultApi)
-                     console.log(key)
+
                 }
             }
+            }
+           
            console.log(defaultApi)
             
             const  res= await fetch(`${defaultApi}`)
             if(res.ok){
                 const data = await res.json();
                 console.log(data);
+                setLeadsData(data);
             }else{
                 const err = await res.json();
                 console.log(err);
@@ -99,8 +103,9 @@ const LeadList = () => {
         </ul>
         </div>
         <div className="filterLeadsDiv">
-            <div>
+            
                 <h4>Filter Leads</h4>
+                <div>
                 <h5> By Lead Status</h5>
                 <select name="status" id="" onChange={(event)=>filterData(event)} >
                     <option value="">Select Lead Status</option>
@@ -120,6 +125,36 @@ const LeadList = () => {
                     ))}
                 </select>
             </div>
+            <div>
+                <h5>By Tags</h5>
+                <select name="tags" id="" onChange={(event)=>filterData(event)}>
+                    <option value="">Select Tag</option>
+                    <option value="High Value">High Value</option>
+                    <option value="Follow-up">Follow Up</option>
+                </select>
+            </div>
+
+            <div>
+                <h5>By Source</h5>
+                <select name="source" id="" onChange={(event)=>filterData(event)}>
+                    <option value="">Select Lead Source</option>
+                    <option value="Website">Website</option>
+                    <option value="Referral">Referral</option>
+                    <option value="Cold Call">Cold Call</option>
+                </select>
+            </div>
+
+                    <div className="my-2">
+                        <h5>Sort By :
+                         <label  htmlFor="priority"><input id="priority" type="radio" name="sort" value="Priority"  />Priority</label> 
+                        <label htmlFor="timeToClose"><input id="timeToClose" type="radio" name="sort" value="timeToClose" onChange={(event)=>filterData(event)}/>Time To Close</label> </h5>
+                    </div>
+
+            <div className="clearFilters text-center">
+                    <button name="clearFilters" className="btn btn-danger" onClick={(event)=>filterData(event)}>Clear Filters</button>
+            </div>
+
+
             
 
         </div>

@@ -122,7 +122,7 @@ const NewLeadForm = () => {
                 <label className="tags-label"  htmlFor="tags">Tags: </label>
                 <div className="tags-input">
                  <label><input type="checkbox" value="High Value" onChange={(event)=>handleTags(event)}/> High Value </label>  
-                <label htmlFor=""><input type="checkbox" value="Follow Up" onChange={(event)=>handleTags(event)}/> Follow Up </label>
+                <label htmlFor=""><input type="checkbox" value="Follow-up" onChange={(event)=>handleTags(event)}/> Follow Up </label>
                 </div>
              
               <br />

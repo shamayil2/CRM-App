@@ -225,12 +225,14 @@ select {
 
 .filterLeadsDiv select {
     width: 100%;
+    margin: 7px 0px;
 }
 
 .filterLeadsDiv h5 {
     color: white;
     font-weight: 400;
     text-align: center;
+    margin: 0;
 }
 
 .filterLeadsDiv option {
