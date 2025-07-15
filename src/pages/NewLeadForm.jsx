@@ -113,9 +113,9 @@ const NewLeadForm = () => {
                 <label htmlFor="priority">Priority: </label>
                 <select name="" id="priority" onChange={(event)=>setLeadData({...leadData,priority:event.target.value})}>
                     <option value="">Choose Priority</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
+                    <option value="3">High</option>
+                    <option value="2">Medium</option>
+                    <option value="1">Low</option>
                 </select>
                 <label htmlFor="">Time to Close (In Days):</label>
                 <input type="number" onChange={(event)=>setLeadData({...leadData,timeToClose:event.target.value})}/><br />

@@ -4,6 +4,7 @@ const LeadList = () => {
     const [leadsData,setLeadsData] = useState([]);
     const [filtersObj,setFiltersObj] = useState({})
     const [salesAgents,setSalesAgents] = useState([]);
+   
     useEffect(()=>{
 
         async function fetchLeads(){
@@ -54,13 +55,12 @@ const LeadList = () => {
         try{
             let param = event.target.name;
             let value = event.target.value;
-            
-            const newFiltersObj = {...filtersObj,[param]:value}
+            let defaultApi = "http://localhost:3000/leads?"
+            if(param!= "clearFilters"){
+                  const newFiltersObj = {...filtersObj,[param]:value}
             console.log(newFiltersObj)
             setFiltersObj({...filtersObj,[param]:value})
-            let defaultApi = "http://localhost:3000/leads?"
-            if(param!="clearFilters"){
-                 for(const key in newFiltersObj){
+             for(const key in newFiltersObj){
                 
                 if(newFiltersObj[key]!==""){
                      defaultApi+=`${key}=${newFiltersObj[key]}&`
@@ -68,12 +68,20 @@ const LeadList = () => {
                 }
             }
             }
+          
+            
+           
+
+           
            
            console.log(defaultApi)
             
             const  res= await fetch(`${defaultApi}`)
             if(res.ok){
                 const data = await res.json();
+                 if(param == "timeToClose"){
+                    data.sort((a,b)=>a.timeToClose-b.timeToClose<0)    
+                }
                 console.log(data);
                 setLeadsData(data);
             }else{
@@ -145,9 +153,21 @@ const LeadList = () => {
             </div>
 
                     <div className="my-2">
-                        <h5>Sort By :
-                         <label  htmlFor="priority"><input id="priority" type="radio" name="sort" value="Priority"  />Priority</label> 
-                        <label htmlFor="timeToClose"><input id="timeToClose" type="radio" name="sort" value="timeToClose" onChange={(event)=>filterData(event)}/>Time To Close</label> </h5>
+                        <h5>Sort By : </h5>
+                        <h6>Priority</h6>
+                        <select name="priority" id="" onChange={(event)=>filterData(event)}>
+                            <option value="">Select Order</option>
+                            <option value="asce">Low To High</option>
+                            <option value="desc">High To Low</option>
+                        </select>
+                        <h6>Time To Close</h6>
+                        <select name="timeToClose" htmlFor="timeToClose" onChange={(event)=>filterData(event)}>
+                         <option value="">Select Order</option>   
+                        <option value="asc">Low To High</option>
+                        <option value="des">High To Low</option>
+                        </select> 
+                        
+                       
                     </div>
 
             <div className="clearFilters text-center">
@@ -183,7 +203,7 @@ const LeadList = () => {
                     <div className="col-md-2">{lead.salesAgent?.name}</div>
                     <div className="col-md-2">{lead.source}</div>
                     <div className="col-md-2">{lead.timeToClose}</div>
-                    <div className="col-md-2">{lead.priority}</div>
+                    <div className="col-md-2">{lead.priority==1?"Low":lead.property==2?"Medium":"High"}</div>
                     <div className="col-md-2">{lead.tags.join(", ")}</div>
                     </div>
                      </li>
