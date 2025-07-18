@@ -1,16 +1,33 @@
 import {useState,useEffect} from "react"
-import {Link} from "react-router-dom"
+import {Link,useSearchParams,useNavigate} from "react-router-dom"
 const LeadList = () => {
     const [leadsData,setLeadsData] = useState([]);
     const [filtersObj,setFiltersObj] = useState({})
     const [salesAgents,setSalesAgents] = useState([]);
-   
+    const [searchParams,setSearchParams] = useSearchParams();
+    console.log(searchParams)
     useEffect(()=>{
+
 
         async function fetchLeads(){
             try{
-                const res = await fetch("http://localhost:3000/leads")
 
+                console.log(searchParams)
+                let apiUrl = "http://localhost:3000/leads?";
+                let res = null;
+                const paramsObj = Object.fromEntries(searchParams.entries());
+                console.log(paramsObj)
+                if(Object.keys(paramsObj).length!=0){
+
+                    for(const key in paramsObj){
+                        apiUrl+=`${key}=${paramsObj[key]}&`
+                    }
+                    console.log(apiUrl)
+                     res = await fetch(`${apiUrl}`)
+                }else{
+                     res = await fetch(`${apiUrl}`)
+                }
+                console.log(apiUrl)
                 if(res.ok){
                     const data = await res.json();
                     setLeadsData([...data])
@@ -48,46 +65,45 @@ const LeadList = () => {
         fetchLeads()
         fetchAgents()
 
-    },[])
+    },[searchParams])
 
     async function filterData(event){
 
         try{
             let param = event.target.name;
             let value = event.target.value;
-            let defaultApi = "http://localhost:3000/leads?"
+            // let defaultApi = "http://localhost:3000/leads?"
             if(param!= "clearFilters"){
                   const newFiltersObj = {...filtersObj,[param]:value}
             console.log(newFiltersObj)
             setFiltersObj({...filtersObj,[param]:value})
-             for(const key in newFiltersObj){
+            setSearchParams(newFiltersObj)
+            //  for(const key in newFiltersObj){
                 
-                if(newFiltersObj[key]!==""){
-                     defaultApi+=`${key}=${newFiltersObj[key]}&`
+            //     if(newFiltersObj[key]!==""){
+            //          defaultApi+=`${key}=${newFiltersObj[key]}&`
 
-                }
-            }
+            //     }
+            // }
+            }else{
+                 setSearchParams({})
             }
           
+          
+        //    console.log(defaultApi)
             
-           
-
-           
-           
-           console.log(defaultApi)
-            
-            const  res= await fetch(`${defaultApi}`)
-            if(res.ok){
-                const data = await res.json();
-                 if(param == "timeToClose"){
-                    data.sort((a,b)=>a.timeToClose-b.timeToClose<0)    
-                }
-                console.log(data);
-                setLeadsData(data);
-            }else{
-                const err = await res.json();
-                console.log(err);
-            }
+            // const  res= await fetch(`${defaultApi}`)
+            // if(res.ok){
+            //     const data = await res.json();
+            //      if(param == "timeToClose"){
+            //         data.sort((a,b)=>a.timeToClose-b.timeToClose<0)    
+            //     }
+            //     console.log(data);
+            //     setLeadsData(data);
+            // }else{
+            //     const err = await res.json();
+            //     console.log(err);
+            // }
         }   
 
         catch(error){
@@ -95,10 +111,8 @@ const LeadList = () => {
         }
     }
 
-
-    // console.log(salesAgents)
-    
-    // console.log(leadsData[0])
+    console.log(searchParams.get("status"))
+ 
     return(
         <>
         <h1 className="text-center mb-4">Lead List</h1>
@@ -108,6 +122,7 @@ const LeadList = () => {
             <div className="side-list leads">
           <ul className="leads-sidebar">
           <Link to="/"><li>Back To Dashboard</li></Link>  
+          <Link to="/addLead"><li>Add New Lead</li></Link> 
         </ul>
         </div>
         <div className="filterLeadsDiv">
@@ -115,7 +130,7 @@ const LeadList = () => {
                 <h4>Filter Leads</h4>
                 <div>
                 <h5> By Lead Status</h5>
-                <select name="status" id="" onChange={(event)=>filterData(event)} >
+                <select value={searchParams.get("status")?searchParams.get("status"):"Select Lead Status"}  name="status" id="" onChange={(event)=>filterData(event)} >
                     <option value="">Select Lead Status</option>
                     <option value="New">New</option>
                     <option value="Contacted">Contacted</option>
@@ -126,7 +141,7 @@ const LeadList = () => {
             </div>
             <div>
                 <h5>By Sales Agent</h5>
-                <select name="salesAgent" id="" onChange={(event)=>filterData(event)} >
+                <select value={searchParams.get("salesAgent")?searchParams.get("salesAgent"):"Select Sales Agent"}  name="salesAgent" id="" onChange={(event)=>filterData(event)} >
                     <option value="">Select Sales Agent</option>
                     {salesAgents.map((agent)=>(
                         <option value={agent._id}>{agent.name}</option>
@@ -135,16 +150,16 @@ const LeadList = () => {
             </div>
             <div>
                 <h5>By Tags</h5>
-                <select name="tags" id="" onChange={(event)=>filterData(event)}>
+                <select value={searchParams.get("tags")?searchParams.get("tags"):"Select Tag"} name="tags" id="" onChange={(event)=>filterData(event)}>
                     <option value="">Select Tag</option>
                     <option value="High Value">High Value</option>
-                    <option value="Follow-up">Follow Up</option>
+                    <option value="Follow-up">Follow-Up</option>
                 </select>
             </div>
 
             <div>
                 <h5>By Source</h5>
-                <select name="source" id="" onChange={(event)=>filterData(event)}>
+                <select value={searchParams.get("source")?searchParams.get("source"):"Select Lead Source"} name="source" id="" onChange={(event)=>filterData(event)}>
                     <option value="">Select Lead Source</option>
                     <option value="Website">Website</option>
                     <option value="Referral">Referral</option>
@@ -155,13 +170,13 @@ const LeadList = () => {
                     <div className="my-2">
                         <h5>Sort By : </h5>
                         <h6>Priority</h6>
-                        <select name="priority" id="" onChange={(event)=>filterData(event)}>
+                        <select value={searchParams.get("priority")?searchParams.get("priority"):"Select Order"} name="priority" id="" onChange={(event)=>filterData(event)}>
                             <option value="">Select Order</option>
                             <option value="asce">Low To High</option>
                             <option value="desc">High To Low</option>
                         </select>
                         <h6>Time To Close</h6>
-                        <select name="timeToClose" htmlFor="timeToClose" onChange={(event)=>filterData(event)}>
+                        <select value={searchParams.get("timeToClose")?searchParams.get("timeToClose"):"Select Order"} name="timeToClose" htmlFor="timeToClose" onChange={(event)=>filterData(event)}>
                          <option value="">Select Order</option>   
                         <option value="asc">Low To High</option>
                         <option value="des">High To Low</option>

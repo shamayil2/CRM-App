@@ -216,11 +216,13 @@ select {
     background-color: #708A58;
     padding: 20px 20px;
     border-radius: 20px;
+    font-size: 0.75em;
 }
 
 .filterLeadsDiv h3 {
     color: white;
     font-weight: 400;
+    font-size: 0.75em;
 }
 
 .filterLeadsDiv select {
@@ -233,6 +235,7 @@ select {
     font-weight: 400;
     text-align: center;
     margin: 0;
+    font-size: 1.25em;
 }
 
 .filterLeadsDiv option {
