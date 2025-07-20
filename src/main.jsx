@@ -4,6 +4,7 @@ import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import NewLeadForm from "./pages/NewLeadForm"
 import NewAgentForm from "./pages/NewAgentForm"
 import LeadList from "./pages/LeadList"
+import LeadDetails from "./pages/LeadDetails"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
 import './index.css'
@@ -20,6 +21,8 @@ const router = createBrowserRouter([{
   path:"/addagent",element:<NewAgentForm/>
 },{
   path:"/leadlist",element:<LeadList/>
+},{
+  path:"/lead-details/:leadId",element:<LeadDetails/>
 }
 ])
 

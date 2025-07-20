@@ -246,3 +246,31 @@ select {
     color: white;
     text-align: center;
 }
+
+.leads-sidebar li {
+    color: black;
+    font-weight: 700;
+}
+
+.lead-details {
+    margin-top: 40px;
+}
+
+.lead-details h1 {
+    color: #5A827E;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+}
+
+.lead-details h5 {
+    margin-bottom: 20px;
+    font-family: sans-serif;
+    color: #708A58;
+    font-weight: 600;
+}
+
+.comment-section textarea {
+    background-color: rgb(226, 188, 140);
+}

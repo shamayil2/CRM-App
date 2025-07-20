@@ -213,7 +213,7 @@ const LeadList = () => {
 
                     <div className="row">
                     <div className="col-md-2">
-                    {lead.name}  <span>({lead.status})</span>
+                   <Link to={`/lead-details/${lead._id}`}>{lead.name}  <span>({lead.status})</span></Link> 
                     </div>
                     <div className="col-md-2">{lead.salesAgent?.name}</div>
                     <div className="col-md-2">{lead.source}</div>
