@@ -273,4 +273,51 @@ select {
 
 .comment-section textarea {
     background-color: rgb(226, 188, 140);
+    border: 0;
+    border-radius: 20px;
+    width: 75%;
+}
+
+.comment-section {
+    background-color: #ae824c;
+    color: white;
+    text-align: center;
+    border-radius: 20px;
+    align-content: center;
+}
+
+.comment-section input {
+    background-color: #e2bc8c;
+    border: 0;
+    border-radius: 20px;
+}
+
+.comment-section button {
+    margin-left: 2%;
+    border: 0;
+    background-color: #e2bc8c;
+    border-radius: 20px;
+    padding: 5px 18px;
+}
+
+.update-lead label {
+    margin-right: 2%;
+}
+
+.update-lead {
+    background-color: rgb(226, 188, 140);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.update-lead button {
+    border: 0;
+    background-color: #311d04;
+    border-radius: 20px;
+    padding: 5px 18px;
+    color: white;
+}
+
+.section-two {
+    margin-top: 30px;
 }
