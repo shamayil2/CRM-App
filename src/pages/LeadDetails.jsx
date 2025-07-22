@@ -6,8 +6,9 @@ const LeadDetails = () => {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [agents,setAgents] = useState([])
-
+  const [agents,setAgents] = useState([]);
+  const [updateDetailsObj,setUpdateDetailsObj] = useState({});
+  const [detailsUpdated,setDetailsUpdates] = useState({})
   useEffect(() => {
     async function getLead() {
       try {
@@ -51,10 +52,45 @@ const LeadDetails = () => {
 
     getLead();
     getAgents();
-  }, []);
-  console.log(data.name);
-  console.log(data.status);
-  console.log(agents)
+  }, [detailsUpdated]);
+ 
+  function updateDetails(event){
+   const param = event.target.name;
+   const value = event.target.value;
+
+   setUpdateDetailsObj({...updateDetailsObj,[param]:value})   
+
+
+  }
+
+  async function postUpdatedDetails(event){
+    try{
+      console.log(updateDetailsObj)
+      const res = await fetch(`http://localhost:3000/leads/${param.leadId}`,{
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify(
+          {...updateDetailsObj}
+        )
+      })
+
+      if(res.ok){
+        const data = await res.json();
+        setData({...data})
+      }
+
+    }
+    catch(error){
+      console.log("Error Updating Details",error)
+    }
+
+  }
+
+ console.log(updateDetailsObj)
+
+
   return (
     <>
       {loading ? (
@@ -91,7 +127,7 @@ const LeadDetails = () => {
               <div className="update-lead col-md-6">
                 <h3>Update Lead Details</h3>
                 <label htmlFor=""> Lead Status: </label>
-                <select name="" id="">
+                <select name="status" id="" onChange={(event)=>updateDetails(event)}>
                   <option value="">Select Lead Status</option>
                   <option value="New">New</option>
                   <option value="Contacted">Contacted</option>
@@ -100,21 +136,21 @@ const LeadDetails = () => {
                   <option value="Closed">Closed</option>
                 </select><br />
                 <label htmlFor=""> Assigned Agent: </label>
-                <select name="" id="">
+                <select name="salesAgent" id="" onChange={(event)=>updateDetails(event)}>
                   <option value="">Select Agent</option>
                     {agents.map((agent)=>(
-                        <option value="">{agent.name}</option>
+                        <option value={agent._id}>{agent.name}</option>
                     ))}
                 </select><br />
                 <label htmlFor=""> Priority: </label>
-                <select name="" id="">
+                <select name="priority" id="" onChange={(event)=>updateDetails(event)}>
                   <option value="">Update Priority</option>
                     <option value="3">High</option>
                     <option value="2">Medium</option>
                     <option value="1">Low</option>
                 </select>
                 <br />
-                <button>Update Details</button>
+                <button onClick={(event)=>postUpdatedDetails(event)}>Update Details</button>
               </div>
             </div>
           </div>
