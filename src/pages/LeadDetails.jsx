@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 const LeadDetails = () => {
   const param = useParams();
-  console.log(param);
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [agents,setAgents] = useState([]);
   const [updateDetailsObj,setUpdateDetailsObj] = useState({});
-  const [detailsUpdated,setDetailsUpdates] = useState({})
+  const [detailsUpdated,setDetailsUpdates] = useState({});
+  const [comment,setComment] = useState("");
   useEffect(() => {
     async function getLead() {
       try {
@@ -88,6 +88,33 @@ const LeadDetails = () => {
 
   }
 
+  async function postComment(){
+  try {
+
+    const res = await fetch(`http://localhost:3000/leads/${param.leadId}/comments`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        commentText:comment,
+        author: data.salesAgent.name
+      })
+    });
+
+    if(res.ok){
+      const data = await res.json();
+      setData({...data})
+      console.log("Comment Posted Succesfully",data)
+    }else{
+      console.log("Error in Posting Comment.")
+    }
+
+  } catch (error) {
+    console.log("Cannot Post the Comments",error) 
+  }
+  }
+
  console.log(updateDetailsObj)
 
 
@@ -115,14 +142,20 @@ const LeadDetails = () => {
               <h5>Tags: {data.tags.join(", ")}</h5>
             </div>
             <div className="row section-two">
-              <div className="comment-section col-md-6">
-                <h3>Add Comment</h3>
-                <textarea name="" id="" ></textarea>
-                <br />
-                <label htmlFor="authorName">
-                  Your Name: <input id="authorName" type="text" />
-                </label>
-                <button>Add Comment</button>
+              <div className="comment-section col-md-6 pt-4">
+                <div className="add-comment">
+                  <textarea name="" id="" onChange={(event)=>setComment(event.target.value)}></textarea>
+
+                <button onClick={()=>postComment()}>Add Comment</button>
+                </div>
+                
+                  <div >
+                    <h6 className="text-center pt-2">Comments:</h6>
+                    <ol>
+                      {/* {data.salesAgent.comments.map((comment)=><li>{comment.commentText} <span>~  {comment.author} ({new Date(comment.createdAt).toLocaleDateString()})</span></li>)} */}
+                    </ol>
+                  </div>
+                
               </div>
               <div className="update-lead col-md-6">
                 <h3>Update Lead Details</h3>

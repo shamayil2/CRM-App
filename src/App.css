@@ -254,6 +254,9 @@ select {
 
 .lead-details {
     margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .lead-details h1 {
@@ -281,9 +284,9 @@ select {
 .comment-section {
     background-color: #ae824c;
     color: white;
-    text-align: center;
     border-radius: 20px;
-    align-content: center;
+    align-content: flex-start;
+    justify-content: flex-start;
 }
 
 .comment-section input {
@@ -298,6 +301,14 @@ select {
     background-color: #e2bc8c;
     border-radius: 20px;
     padding: 5px 18px;
+}
+
+.comment-section li span {
+    color: #082523;
+}
+
+.add-comment {
+    display: flex;
 }
 
 .update-lead label {
