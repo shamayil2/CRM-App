@@ -121,7 +121,8 @@ const LeadList = () => {
             <div className="col-md-4">
             <div className="side-list leads">
           <ul className="leads-sidebar">
-          <Link to="/"><li>Back To Dashboard</li></Link>  
+          <Link to="/"><li>Back To Dashboard</li></Link>
+          <Link to="/leadstatusview"><li>View Leads By Status</li></Link>  
           <Link to="/addLead"><li>Add New Lead</li></Link> 
         </ul>
         </div>

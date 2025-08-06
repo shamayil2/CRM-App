@@ -332,3 +332,11 @@ select {
 .section-two {
     margin-top: 30px;
 }
+
+.statusSelect select {
+    width: 100%;
+}
+
+.lead-status-list div {
+    padding: 5px;
+}
