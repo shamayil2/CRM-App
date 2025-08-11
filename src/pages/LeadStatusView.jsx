@@ -1,26 +1,24 @@
-import { Link,useSearchParams } from "react-router-dom";
-import { useState, useEffect,useContext } from "react";
-import {AgentsContext} from "../context/AgentsContext"
+import { Link, useSearchParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { AgentsContext } from "../context/AgentsContext";
 const LeadStatusView = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {salesAgentsData} = useContext(AgentsContext)
-  const [searchParams,setSearchParams] = useSearchParams({})
+  const { salesAgentsData } = useContext(AgentsContext);
+  const [searchParams, setSearchParams] = useSearchParams({});
 
   useEffect(() => {
     async function fetchLeads() {
       try {
         let apiUrl = "http://localhost:3000/leads?";
         let searchParamsObj = Object.fromEntries(searchParams.entries());
-        console.log(searchParamsObj)
-        for(const param in searchParamsObj){
-            apiUrl+=`${param}=${searchParamsObj[param]}`
-        }
-
+        console.log(searchParamsObj);
+        for (const param in searchParamsObj) {
+          apiUrl += `${param}=${searchParamsObj[param]}&`;
+        }    
         const res = await fetch(`${apiUrl}`);
         if (res.ok) {
           const data = await res.json();
-          console.log(data);
           setData(data);
           setLoading(false);
         } else {
@@ -33,14 +31,29 @@ const LeadStatusView = () => {
     }
 
     fetchLeads();
-  }, [searchParams]);
+  }, [searchParams,salesAgentsData]);
 
-  function filterLeads(event){
 
+  function filterLeads(event) {
     const param = event.target.name;
     const value = event.target.value;
-    setSearchParams({[param]:value})
+    setSearchParams({ [param]: value });
+  }
 
+  function filterByAgent(event) {
+    const param = event.target.name;
+    const value = event.target.value;
+    let searchParamsObj = Object.fromEntries(searchParams.entries());
+    setSearchParams({ ...searchParamsObj, [param]: value });
+  }
+
+  function clearAgentFilter(){
+    let searchParamsObj = Object.fromEntries(searchParams.entries());
+    console.log(searchParamsObj)
+    delete searchParamsObj["salesAgent"];
+        console.log(searchParamsObj)
+
+    setSearchParams({...searchParamsObj})
 
   }
 
@@ -57,22 +70,42 @@ const LeadStatusView = () => {
                 </Link>
               </ul>
             </div>
-             <div className="side-list leads">
-             <div className="filterLeadsDiv">
+            <div className="side-list leads">
+              <div className="filterLeadsDiv">
                 <h4>Filter Leads</h4>
                 <h6>Filter By Sales Agent</h6>
-                <select name="" id="">
-                  {salesAgentsData.map((agent)=>(
-                    <option value="">{agent.name}</option>
+                <select
+                  name="salesAgent"
+                  id=""
+                  onChange={(event) => filterByAgent(event)}
+                  value={searchParams.get("salesAgent")?searchParams.get("salesAgent"):"Select Agent"}
+                >
+                  <option value="">Select Agent</option>
+                  {salesAgentsData.map((agent) => (
+                    <option data-name={agent.name} value={agent._id}>
+                      {agent.name}
+                    </option>
                   ))}
                 </select>
-             </div>
+                <div className="text-center">
+                   <button onClick={()=>clearAgentFilter()} className="btn btn-danger btn-sm">Clear Filter</button>
+                </div>
+               
+              </div>
             </div>
           </div>
           <div className="col-md-8">
             <h3 className="text-center pt-4">Lead List by Status</h3>
             <div className="statusSelect text-center">
-              <select value={searchParams.get("status")?searchParams.get("status"):"Select Status"} name="status" id="" onChange={(event)=>filterLeads(event)}>
+              <select
+                value={
+                  searchParams.get("status")
+                    ? searchParams.get("status")
+                    : "Select Status"
+                }
+                name="status"
+                onChange={(event) => filterLeads(event)}
+              >
                 <option value="">All Leads</option>
                 <option value="New">New</option>
                 <option value="Contacted">Contacted</option>
@@ -84,22 +117,27 @@ const LeadStatusView = () => {
             <div className="leadsView">
               <div className="container">
                 <div className="row lead-status-list">
-                  <div className="col-md-3"><b>Lead Name</b></div>
-                  <div className="col-md-3"><b>Assigned Sales Agent</b></div>
-                  <div className="col-md-3"><b>Time To Close</b></div>
-                  <div className="col-md-3"><b>Priority</b></div>
+                  <div className="col-md-3">
+                    <b>Lead Name</b>
+                  </div>
+                  <div className="col-md-3">
+                    <b>Assigned Sales Agent</b>
+                  </div>
+                  <div className="col-md-3">
+                    <b>Time To Close</b>
+                  </div>
+                  <div className="col-md-3">
+                    <b>Priority</b>
+                  </div>
                   {loading ? (
                     <p>Loading Leads....</p>
-                  ) : (
+                  ) : data.length==0?<h3 className="text-center py-4">No Leads Found!</h3> :(
                     data.map((lead) => (
                       <>
-                     
                         <div className="col-md-3">{lead.name}</div>
                         <div className="col-md-3">{lead.salesAgent.name}</div>
                         <div className="col-md-3">{lead.timeToClose}</div>
-                        <div className="col-md-3">{lead.priority}</div>
-                     
-                      
+                        <div className="col-md-3"><div className="col-md-3">{lead.priority==1?"Low":lead.priority==2?"Medium":"High"}</div></div>
                       </>
                     ))
                   )}

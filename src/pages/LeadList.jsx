@@ -123,6 +123,7 @@ const LeadList = () => {
           <ul className="leads-sidebar">
           <Link to="/"><li>Back To Dashboard</li></Link>
           <Link to="/leadstatusview"><li>View Leads By Status</li></Link>  
+          <Link to="/salesagentview"><li>View Leads By Agents</li></Link> 
           <Link to="/addLead"><li>Add New Lead</li></Link> 
         </ul>
         </div>
