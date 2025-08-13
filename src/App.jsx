@@ -7,6 +7,7 @@ import LeadDetails from "./pages/LeadDetails"
 import LeadStatusView from "./pages/LeadStatusView"
 import AgentsProvider from "./context/AgentsContext"
 import SalesAgentView from "./pages/SalesAgentView"
+import LeadsProvider  from "./context/LeadsContext"
 const App = () => {
 
 

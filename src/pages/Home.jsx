@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom"
+import {useState,useEffect} from "react"
 const Home = () => {
 
   return(
@@ -32,7 +33,7 @@ const Home = () => {
     <h5>Lead Status</h5>
     <ul>
       <li><h6><span>New: 5 Leads</span> </h6></li>
-      <li><h6><span>Contacted: 2 Leads</span> </h6></li>
+      <li><h6><span>Contacted: 4 Leads</span> </h6></li>
       <li><h6><span>Qualified: 3 Leads</span> </h6></li>
     </ul>
     </div>

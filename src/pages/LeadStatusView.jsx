@@ -19,6 +19,7 @@ const LeadStatusView = () => {
         const res = await fetch(`${apiUrl}`);
         if (res.ok) {
           const data = await res.json();
+          console.log("Manual Leads:" , data)
           setData(data);
           setLoading(false);
         } else {
@@ -33,7 +34,7 @@ const LeadStatusView = () => {
     fetchLeads();
   }, [searchParams,salesAgentsData]);
 
-
+console.log(data)
   function filterLeads(event) {
     const param = event.target.name;
     const value = event.target.value;

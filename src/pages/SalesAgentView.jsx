@@ -13,8 +13,9 @@ const SalesAgentView = () => {
          const searchParamsObj = Object.fromEntries(searchParams.entries());
         console.log(searchParamsObj)
         for(const key in searchParamsObj){
-            apiUrl+=`${key}=${searchParamsObj[key]}`
+            apiUrl+=`${key}=${searchParamsObj[key]}&`
         }
+        console.log(apiUrl)
         const res = await fetch(apiUrl)
        
         
@@ -35,9 +36,29 @@ const SalesAgentView = () => {
     function filterLeads(event){
         const param = event.target.name;
         const value = event.target.value
-        setSearchParams({[param]:value});
+        const searchParamsObj = Object.fromEntries(searchParams.entries());
+
+        setSearchParams({...searchParamsObj,[param]:value});
         
     }
+    function filterByStatus(event){
+      const param = event.target.name;
+      const value = event.target.value;
+      const searchParamsObj = Object.fromEntries(searchParams.entries());
+      console.log(searchParamsObj)
+      setSearchParams({...searchParamsObj,[param]:value});
+
+
+
+    }
+    function sortByPriority(event){
+      const param = event.target.name;
+      const value= event.target.value;
+      console.log(param,value)
+      const searchParamsObj = Object.fromEntries(searchParams.entries());
+      setSearchParams({...searchParamsObj,[param]:value})
+
+    } 
 
     console.log(leadsData)
   return (
@@ -59,19 +80,20 @@ const SalesAgentView = () => {
                 <div className="filterLeadsDiv">
                 <h4>Filter Leads</h4>
                 <h6>Filter By Status</h6>
-                <select name="" id="">
+                <select value={searchParams.get("status")?searchParams.get("status"):"Select Status"} name="status" id="" onChange={(event)=>filterByStatus(event)}>
                     <option value="">All Leads</option>
-                    <option value="">New</option>
-                    <option value="">Contacted</option>
-                    <option value="">Qualified</option>
-                    <option value="">Proposal Sent</option>
-                    <option value="">Closed</option>
+                    <option value="New">New</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Qualified">Qualified</option>
+                    <option value="Proposal Sent">Proposal Sent</option>
+                    <option value="Closed">Closed</option>
                 </select>
 
                 <h6>Sort By Priority</h6>
-                <select name="" id="">
-                    <option value="">Low To High</option>
-                    <option value="">High To Low</option>
+                <select name="priority" value={searchParams.get("priority")?searchParams.get("priority"):"Select Sorting Order"} id="" onChange={(event)=>sortByPriority(event)}>
+                  <option value="">Select Sorting Order</option>
+                    <option value="asce">Low To High</option>
+                    <option value="desc">High To Low</option>
                 </select>
                 </div>
             </div>
@@ -90,14 +112,14 @@ const SalesAgentView = () => {
                     <div className="col-md-3"><b>Time To Close</b></div>
                     <div className="col-md-3"><b>Priority</b></div>
 
-                    {leadsData.map((lead)=>(
+                    {leadsData.length!=0 ? leadsData.map((lead)=>(
                         <>
                         <div className="col-md-3">{lead.name}</div>
                         <div className="col-md-3">{lead.status}</div>
                         <div className="col-md-3">{lead.timeToClose}</div>
                         <div className="col-md-3">{lead.priority==1?"Low":lead.priority==2?"Medium":"High"}</div>
                         </>
-                    ))}
+                    )):<h1 className="text-center my-4">No Leads Found</h1>}
                 </div>
             </div>
           </div>
