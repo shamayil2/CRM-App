@@ -15,7 +15,7 @@ Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 export default function Reports() {
   const { leadsData } = useContext(LeadsContext);
   console.log(leadsData);
-  const { salesAgentsData } = useContext(AgentsContext);
+
   const newLeads = leadsData.filter((lead) => lead.status == "New").length;
   const contactedLeads = leadsData.filter(
     (lead) => lead.status == "Contacted"
@@ -29,9 +29,7 @@ export default function Reports() {
   const closedLeads = leadsData.filter(
     (lead) => lead.status == "Closed"
   ).length;
-  console.log(closedLeads);
-  const leadsClosed = leadsData.filter((lead) => lead.status == "Closed");
-  console.log(leadsClosed);
+
   const data1 = {
     labels: ["New", "Contacted", "Qualified", "Proposal Sent", "Closed"],
     datasets: [
@@ -55,72 +53,111 @@ export default function Reports() {
       display: true,
       text: "Leads by Status",
     },
-    scales:{
-        x:{
-            title:{
-                display:true,
-                text:"Lead Status "
-            }
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Lead Status ",
         },
-        y:{
-            title:{
-                display:true,
-                text:"Number of Sales"
-            }
-        }
-    }
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Number of Sales",
+        },
+      },
+    },
   };
+
+
+    //Second Chart
+  const leadsClosed = leadsData.filter((lead) => lead.status == "Closed");
   const closedSalesAgents = [];
   leadsClosed.map((lead) => {
-    if(!closedSalesAgents.includes(lead.salesAgent.name)){
-        closedSalesAgents.push(lead.salesAgent.name)
+    if (!closedSalesAgents.includes(lead.salesAgent.name)) {
+      closedSalesAgents.push(lead.salesAgent.name);
     }
   });
-  console.log(closedSalesAgents);
-  const leadsFiltered = leadsClosed.map((lead)=>lead.priority);
-  console.log(leadsFiltered)
 
+  const leadsArr2 = {};
+  leadsClosed.map((lead)=>{
+    
+    if(lead.salesAgent.name in leadsArr2){
+      leadsArr2[lead.salesAgent.name]++;
+    }else{
+      leadsArr2[lead.salesAgent.name]=1
+    }
+
+  })
+
+  const closedLeadsAgents = Object.keys(leadsArr2);
+  const closedLeadsNumber = Object.values(leadsArr2);
+
+
+  function leadsBySalesAgents(agents) {
+    const leadsArr = [];
+    agents.map((agent) => {
+      const agentLeads = leadsData.filter(
+        (lead) => lead.salesAgent.name == agent
+      ).length;
+      console.log(agentLeads);
+      leadsArr.push(agentLeads);
+    });
+
+    return leadsArr;
+  }
+  const leadsArray = leadsBySalesAgents(closedSalesAgents);
+  console.log(leadsArray);
 
   const data2 = {
-    labels: [...closedSalesAgents],
-    datasets:[
-        {
-            label:"Leads Closed",
-            data: [...leadsFiltered],
-            backgroundColor:"#d41b1bff"
-        }
-    ]
+    labels: [...closedLeadsAgents],
+    datasets: [
+      {
+        label: "Leads Closed",
+        data: closedLeadsNumber,
+        backgroundColor: "#d41b1bff",
+      },
+    ],
   };
 
- const options1 = {
-  responsive: true,
-  plugins: {
-    tooltip: {
-      enabled: true,
-      callbacks: {
-        label: function (context) {
-          const index = context.dataIndex;       // which bar is hovered
-          const leadName = leadsClosed[index].name; // use same index
-          return `Lead Name : ${leadName}`;
-        }
-      }
-    }
-  },
-  scales:{
-    x:{
-      title:{
-        display:true,
-        text:"Sales Agents"
-      }  
+  const options1 = {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function (context) {
+            const index = context.dataIndex; // which bar is hovered
+            const leadName = leadsClosed[index].name; // use same index
+            return `Lead Name : ${leadName}`;
+          },
+        },
+      },
     },
-    y:{
-        title:{
-            display:true,
-            text:"Priority"
-        }
-    }
-  }
-};
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Sales Agents",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Number of Leads",
+        },
+        ticks: {
+          stepSize: 1,
+          color: "black",
+          font: {
+            size: 20,
+          },
+        },
+      },
+    },
+  };
+
+  //Third Chart
 
   return (
     <>
@@ -131,7 +168,7 @@ export default function Reports() {
         </div>
         <div className="col-md-6 my-4 text-center">
           <h1>Leads Closed By Sales Agents</h1>
-          <Bar data={data2} options={options1}/>               
+          <Bar data={data2} options={options1} />
         </div>
       </div>
     </>
