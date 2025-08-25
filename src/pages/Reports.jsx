@@ -6,12 +6,13 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar,Pie } from "react-chartjs-2";
 import { useContext } from "react";
 import { LeadsContext } from "../context/LeadsContext";
 import { AgentsContext } from "../context/AgentsContext";
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,ArcElement);
 export default function Reports() {
   const { leadsData } = useContext(LeadsContext);
   console.log(leadsData);
@@ -159,6 +160,37 @@ export default function Reports() {
 
   //Third Chart
 
+  const data3 = {
+    labels: ["New", "Contacted", "Qualified", "Proposal Sent", "Closed"],
+    datasets: [
+      {
+        data: [
+          newLeads,
+          contactedLeads,
+          qualifiedLeads,
+          proposedLeads,
+          closedLeads,
+        ],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#1a9740ff', '#820d80ff'],
+        borderColor: ['#fff', '#fff', '#fff','#fff','#fff'],
+        borderWidth: 2,
+      },
+    ],
+  };
+
+    const options3 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Leads By Status',
+      },
+    },
+  };
+
   return (
     <>
       <div className="row">
@@ -169,6 +201,10 @@ export default function Reports() {
         <div className="col-md-6 my-4 text-center">
           <h1>Leads Closed By Sales Agents</h1>
           <Bar data={data2} options={options1} />
+        </div>
+        <div className="col-md-4 my-4 text-center">
+          <h1>Leads By Status</h1>
+          <Pie data={data3} options={options3} />
         </div>
       </div>
     </>
