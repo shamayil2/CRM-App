@@ -18,6 +18,7 @@ export default function Reports() {
   const [leadsInPipeline,setLeadsInPipeline] = useState([])
   const [agentsClosedLeads,setAgentsClosedLeads] = useState([])
   const {salesAgentsData} = useContext(AgentsContext)
+  console.log(agentsClosedLeads)
   useEffect(()=>{
 
     async function getLeadsInPipeline(){
@@ -88,7 +89,7 @@ export default function Reports() {
 
     //Second Chart
      const data2 = {
-    labels: agentsClosedLeads && salesAgentsData.filter((lead))  ,
+    labels: agentsClosedLeads && Object.keys(agentsClosedLeads)  ,
     datasets: [
       {
         label: "Number of Sales",
@@ -228,7 +229,9 @@ console.log(salesAgentsData)
         <div className="col-md-6 my-4 text-center">
           <h1>Leads Closed By Sales Agents</h1>
           <Bar data={data2} options={options2} />
-        </div>{/*
+        </div>
+        
+        {/*
         <div className="col-md-4 my-4 text-center">
           <h1>Leads By Status</h1>
           <Pie data={data3} options={options3} />

@@ -9,6 +9,7 @@ import AgentsProvider from "./context/AgentsContext"
 import SalesAgentView from "./pages/SalesAgentView"
 import LeadsProvider from "./context/LeadsContext" 
 import Reports from "./pages/Reports"
+import SalesAgents from "./pages/SalesAgents"
 const App = () => {
 
 
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/leadstatusview" element={<LeadStatusView/>}/>
       <Route path="/salesagentview" element= {<SalesAgentView/>}/>
       <Route path="/reports" element= {<LeadsProvider><Reports/></LeadsProvider>}/>
+      <Route path="/salesagents" element={<SalesAgents/>}/>
     </Routes>
     </AgentsProvider>
     </BrowserRouter>

@@ -18,7 +18,7 @@ const Home = () => {
           <ul>
           <Link to="/leadList"><li>Leads</li></Link>  
             <li>Sales</li>
-            <li>Agents</li>
+           <Link to="/salesagents"><li>Agents</li></Link> 
           <Link to="/reports"><li>Reports</li></Link> 
             <li>Settings</li>
         
