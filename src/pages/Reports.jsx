@@ -17,8 +17,9 @@ export default function Reports() {
 
   const [leadsInPipeline,setLeadsInPipeline] = useState([])
   const [agentsClosedLeads,setAgentsClosedLeads] = useState([])
+  const [leadsLastWeek,setLeadsLastWeek] = useState([]);
   const {salesAgentsData} = useContext(AgentsContext)
-  console.log(agentsClosedLeads)
+  
   useEffect(()=>{
 
     async function getLeadsInPipeline(){
@@ -47,19 +48,33 @@ export default function Reports() {
       }
     }
 
+    async function getLastWeekLeads(){
+
+      const res = await fetch("http://localhost:3000/report/last-week")
+
+      if(res.ok){
+          const data = await res.json();
+          console.log(data.closedLastWeek)
+          setLeadsLastWeek(data.closedLastWeek)
+      }else{
+        const error = await res.json();
+        console.log(error);
+      }
+
+    }
+    getLastWeekLeads()
     getLeadsInPipeline();
     getAgentsClosedLeads();
 
   },[])
-
-  console.log(agentsClosedLeads)
+ 
   const data1 = {
     labels: leadsInPipeline &&  Object.keys(leadsInPipeline),
     datasets: [
       {
         label: "Number of Sales",
         data: leadsInPipeline && Object.values(leadsInPipeline),
-        backgroundColor: "rgba(16, 47, 12, 0.87)",
+        backgroundColor: "rgba(137, 46, 105, 0.87)",
       },
     ],
   };
@@ -94,7 +109,7 @@ export default function Reports() {
       {
         label: "Number of Sales",
         data: agentsClosedLeads && Object.values(agentsClosedLeads),
-        backgroundColor: "rgba(23, 107, 12, 0.87)",
+        backgroundColor: "rgba(173, 76, 37, 0.87)",
       },
     ],
   };
@@ -121,7 +136,41 @@ export default function Reports() {
     },
   };
 
-console.log(salesAgentsData)
+
+
+//Third Chart
+   const data3 = {
+    labels: leadsLastWeek && leadsLastWeek.map((lead)=>lead.name)  ,
+    datasets: [
+      {
+        label: "Lead Closed In Last Week",
+        data: leadsLastWeek && leadsLastWeek.map((lead)=>lead.priority),
+        backgroundColor: "rgba(34, 29, 115, 0.87)",
+      },
+    ],
+  }; 
+
+   const options3 = {
+    responsive: true,
+    title: {
+      display: true,
+      text: "Leads Closed Last Week with assigned priority",
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Leads Closed Over Last Week  ",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Priority Level",
+        },
+      },
+    },
+  };
 
   // function leadsBySalesAgents(agents) {
   //   const leadsArr = [];
@@ -231,11 +280,11 @@ console.log(salesAgentsData)
           <Bar data={data2} options={options2} />
         </div>
         
-        {/*
-        <div className="col-md-4 my-4 text-center">
-          <h1>Leads By Status</h1>
-          <Pie data={data3} options={options3} />
-        </div> */}
+        
+        <div className="col-md-6 my-4 text-center">
+          <h1>Leads Closed Last Week</h1>
+          <Bar data={data3} options={options3} />
+        </div>
       </div>
     </>
   );
