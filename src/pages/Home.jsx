@@ -2,6 +2,28 @@ import {Link} from "react-router-dom"
 import {useState,useEffect} from "react"
 const Home = () => {
 
+  const [leads,setLeads] = useState([]);
+
+  useEffect(()=>{
+
+    async function fetchLeads(){
+
+      const res = await fetch("http://localhost:3000/leads");
+
+      if(res.ok){
+        const data = await res.json();
+        setLeads([...data])
+      }else{
+        const  error = await res.json();
+        console.log(error)
+      }
+
+    }
+
+    fetchLeads()
+
+  },[])
+
   return(
     <>
     <header>
@@ -32,9 +54,9 @@ const Home = () => {
     <div className="lead-status">
     <h5>Lead Status</h5>
     <ul>
-      <li><h6><span>New: 5 Leads</span> </h6></li>
-      <li><h6><span>Contacted: 4 Leads</span> </h6></li>
-      <li><h6><span>Qualified: 3 Leads</span> </h6></li>
+      <li><h6><span>New: {leads.filter((lead)=>lead.status=="New").length} Leads</span> </h6></li>
+      <li><h6><span>Contacted: {leads.filter((lead)=>lead.status=="Contacted").length} Leads</span> </h6></li>
+      <li><h6><span>Qualified: {leads.filter((lead)=>lead.status=="Qualified").length} Leads</span> </h6></li>
     </ul>
     </div>
     <div className="filterDiv">

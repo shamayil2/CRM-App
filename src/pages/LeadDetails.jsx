@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; 
 import { useEffect, useState } from "react";
 const LeadDetails = () => {
   const param = useParams();
@@ -9,9 +9,12 @@ const LeadDetails = () => {
   const [updateDetailsObj,setUpdateDetailsObj] = useState({});
   const [detailsUpdated,setDetailsUpdates] = useState({});
   const [comment,setComment] = useState("");
+  const [leadComments,setLeadComments] = useState([])
+  const [commentAdded,setCommentAdded] = useState(false)
+  const [commentAuthor,setCommentAuthor] = useState("")
   useEffect(() => {
     async function getLead() {
-      try {
+         try {
         const res = await fetch(`http://localhost:3000/leads/${param.leadId}`);
 
         if (res.ok) {
@@ -50,10 +53,32 @@ const LeadDetails = () => {
 
     }
 
+    async function getComments(){
+
+      try{
+
+        const res = await fetch(`http://localhost:3000/leads/${param.leadId}/comments`)
+        if(res.ok){
+          const data = await res.json();
+          console.log(data)
+          setLeadComments([...data])
+          
+        }else{
+          const error = await res.json();
+          console.log("Error fetching comments",error)
+        }
+
+      }
+      catch(error){
+        console.log("Error Getting Comments for the lead.",error)
+      }
+
+    }
+    getComments();
     getLead();
     getAgents();
-  }, [detailsUpdated]);
- 
+  }, [detailsUpdated,commentAdded]);
+
   function updateDetails(event){
    const param = event.target.name;
    const value = event.target.value;
@@ -62,6 +87,8 @@ const LeadDetails = () => {
 
 
   }
+
+
 
   async function postUpdatedDetails(event){
     try{
@@ -90,21 +117,22 @@ const LeadDetails = () => {
 
   async function postComment(){
   try {
-
+    console.log(data.leadId,data.salesAgent._id)
     const res = await fetch(`http://localhost:3000/leads/${param.leadId}/comments`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json"
       },
       body:JSON.stringify({
-        commentText:comment,
-        author: data.salesAgent.name
+        lead:param.leadId,
+        salesAgent:commentAuthor,
+        commentText:comment
       })
     });
 
     if(res.ok){
       const data = await res.json();
-      setData({...data})
+      setCommentAdded(!commentAdded)
       console.log("Comment Posted Succesfully",data)
     }else{
       console.log("Error in Posting Comment.")
@@ -144,16 +172,22 @@ const LeadDetails = () => {
             <div className="row section-two">
               <div className="comment-section col-md-6 pt-4">
                 <div className="add-comment">
-                  <textarea name="" id="" onChange={(event)=>setComment(event.target.value)}></textarea>
-
+                <textarea name="" id="" onChange={(event)=>setComment(event.target.value)}></textarea>
+                  <select name="" id="" onChange={(event)=>setCommentAuthor(event.target.value)}>
+                    {agents.map((agent)=>(
+                      <option value={agent._id}>{agent.name}</option>
+                    ))}
+                  </select>
                 <button onClick={()=>postComment()}>Add Comment</button>
                 </div>
                 
                   <div >
                     <h6 className="text-center pt-2">Comments:</h6>
                     <ol>
-                      {/* {data.salesAgent.comments.map((comment)=><li>{comment.commentText} <span>~  {comment.author} ({new Date(comment.createdAt).toLocaleDateString()})</span></li>)} */}
-                    </ol>
+                      {leadComments.map((comment)=>(
+                          <li style={{margin:"5px",padding:"5px",backgroundColor:"#e2bc8c",borderRadius:"10px"}}>{comment.commentText}<span > : {comment.salesAgent.name} ({new Date(comment.updatedAt).toLocaleString()})</span></li>
+                      ))}
+                    </ol> 
                   </div>
                 
               </div>
